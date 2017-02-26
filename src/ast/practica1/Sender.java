@@ -33,13 +33,25 @@ public class Sender {
     //Retorna el número real de bytes enviats
     //-1 en cas de final de fitxer
     public int enviar() throws IOException {
-        int c, i = 0;
+        int c, i = 0, bEsc;
         byte[] data = new byte[this.N];
 
         try {
-            while ((c = this.fr.read()) != -1) {
+            /*while ((c = this.fr.read()) != -1) {
                 data[i] = (byte) c;
                 i++;
+            }*/
+            if (this.fr.available() == 0) {
+                return -1;
+
+            } else {
+                /*while ((bEsc = (this.fr.read(data))) != 0) {
+                    i += bEsc;
+                }*/
+                while ((c = this.fr.read()) != -1) {
+                    data[i] = (byte) c;
+                    i++;
+                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
