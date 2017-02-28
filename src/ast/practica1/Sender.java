@@ -16,54 +16,60 @@ import java.io.IOException;
 public class Sender {
 
     private final TSocketSender tss;
-    private final int N = 10; //mod a 10
+    private final int N = 10;
     private FileInputStream fr;
+    private int offset;
+    
 
     //el fitxer poema.txt ha d’estar en la carpeta del projecte.
     public Sender(Channel ch) {
-        this.tss = new TSocketSender(ch);
+        tss = new TSocketSender(ch);
+        this.offset = 0;
         try {
-            this.fr = new FileInputStream("poema.txt");
+            fr = new FileInputStream("poema.txt");
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+        ex.printStackTrace();
         }
+        
     }
 
+    
     //llegeix N bytes del fitxer i els envia.
     //Retorna el número real de bytes enviats
     //-1 en cas de final de fitxer
-    public int enviar() throws IOException {
-        int c, i = 0, bEsc;
-        byte[] data = new byte[this.N];
+    public int enviar() {
+    int c, datosLeidos=0,i = 0,posicion = 0;
+        byte[] data = new byte[this.N]; //Creamos un array de bytes que llenaremos
 
         try {
-            /*while ((c = this.fr.read()) != -1) {
-                data[i] = (byte) c;
-                i++;
-            }*/
-            if (this.fr.available() == 0) {
-                return -1;
-
+            
+            if (this.fr.available() == 0) { //si no queda nada para leer o final de fichero
+                return -1; //devuelve -1
             } else {
-                /*while ((bEsc = (this.fr.read(data))) != 0) {
-                    i += bEsc;
-                }*/
-                while ((c = this.fr.read()) != -1) {
-                    data[i] = (byte) c;
-                    i++;
+                for(i=offset;i<offset+this.N;i++){ //desde el offset (último dato leído) hasta la longitud que hemos de enviar
+                    if(((c = this.fr.read()) == -1)){ //si cuando leemos (ejemplo: "hola" y llegamos hasta despues de la "a")
+                        data[posicion]=-1; //llemamos de -1 lo que queda y en recepción ya miraremos
+                    }
+                    else{
+                        data[posicion] = (byte) c; //no estamos en final de fichero, luego leemos el siguiente byte
+                        datosLeidos++;
+                    }
+                    posicion++;
                 }
-            }
-        } catch (IOException e) {
+                
+                offset = offset + this.N; //actualizamos offset
+                
+                }
+            } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         this.tss.sendData(data, 0, i);
-        return i;
+        return datosLeidos; //no hemos devuelto -1, ni hemos encontrado final de fichero, enotnces hemos leido N bytes
     }
-
+    
     //Tanca l’stream al fitxer i la connexió
-    public void close() throws IOException {
-        this.fr.close();
-        this.tss.close();
+    public void close() {
 
     }
-}
+    
+ }
