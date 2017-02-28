@@ -23,30 +23,23 @@ public class TSocketReceiver {
     public int receiveData(byte[] data, int offset, int length) {
         TCPSegment segment = this.ch.receive();  //Se recibe un segmento
         byte[] cpSegment = segment.getData();   //Se pasa a un array de bytes
+        int tamanyRecepcio = 0;
         
-        //ERROR: Aixo ens diu la quantitat de cel·les, no d'elements.
-        int tamanyRecepcio = cpSegment.length;  //Obtenemos el tamaño del array
-
         /*Llenamos nuestro arrray "data" con los bytes del array cpSegment, 
         desde la posicion offset hasta que se acaben los datos de cpSegment
          */
-        for (int i = offset; i < offset + tamanyRecepcio; i++) {
+        for (int i = offset; i < offset + length; i++) {
+            if(cpSegment[i-offset]!=-1){
+                tamanyRecepcio++;
+            }
             data[i] = cpSegment[i - offset];
         }
+        this.data = data;
         //Si el segmento estaba vacio
         if (tamanyRecepcio == 0) {
-            this.data = data;
-            return -1;
-        } else if (tamanyRecepcio == length) {
-            this.data = data;
-            return length;
-        } /*Llenamos de -1 (flag) indicando que el segmento contenia menos 
-        datos que nuestro parametro length (la falta de datos se llena con -1)*/ else {
-            for (int i = offset + tamanyRecepcio; i < length; i++) {
-                data[i] = -1;
-            }
-            this.data = data;
-            return tamanyRecepcio;
+           return -1;
+        } else{
+           return tamanyRecepcio;
         }
 
     }

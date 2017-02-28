@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Receiver {
 
     private final TSocketReceiver tsr;
-    private final int N = 1000;
+    private final int N = 10;
     private FileOutputStream fr;
 
     public Receiver(Channel ch) {
@@ -43,7 +43,7 @@ public class Receiver {
             this.close();
             return -1;
         }
-        this.close();
+        //this.close();
         return informacioProcessada;
     }
 

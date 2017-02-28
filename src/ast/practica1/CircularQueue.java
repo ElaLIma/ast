@@ -35,11 +35,7 @@ public class CircularQueue<E> implements Queue<E> {
     public boolean hasFree(int n) throws IllegalArgumentException {
         if (n <= 0) {
             throw new IllegalArgumentException();
-        } else if (N - size() >= n || n == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return N - size() >= n || n == 0;
     }
 
     @Override
@@ -86,8 +82,7 @@ public class CircularQueue<E> implements Queue<E> {
 
     @Override
     public void put(E e) throws IllegalStateException {
-        boolean ec;
-        if (ec = full()) {
+        if (full()) {
             throw new IllegalStateException();
         } else {
             cua[fi] = e;

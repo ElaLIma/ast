@@ -28,6 +28,7 @@ public class QueueChannel implements Channel {
 
     @Override
     public TCPSegment receive() {
+        this.tamanyCua--;
         return (TCPSegment) this.cua.get();
     }
 

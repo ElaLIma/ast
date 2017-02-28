@@ -68,7 +68,10 @@ public class Sender {
     }
     
     //Tanca l’stream al fitxer i la connexió
-    public void close() {
+    public void close() throws IOException {
+        this.fr.close();
+        this.tss.close();
+
 
     }
     
