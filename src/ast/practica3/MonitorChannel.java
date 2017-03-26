@@ -27,7 +27,6 @@ public class MonitorChannel implements Channel {
         this.enviar = lk.newCondition();
         this.rebre = lk.newCondition();
         this.cua = new CircularQueue(length);
-        this.numeroAleatorio = new Random(System.currentTimeMillis());
     }
 
     public MonitorChannel(double lossRatio, int length) {
@@ -36,7 +35,7 @@ public class MonitorChannel implements Channel {
         this.enviar = lk.newCondition();
         this.rebre = lk.newCondition();
         this.cua = new CircularQueue(length);
-        this.numeroAleatorio = new Random(System.currentTimeMillis());
+        
 
     }
 
@@ -52,6 +51,7 @@ public class MonitorChannel implements Channel {
                 Logger.getLogger(MonitorChannel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        this.numeroAleatorio = new Random(System.currentTimeMillis());
         if (this.numeroAleatorio.nextFloat() > this.lossRatio) {
             cua.put(seg);
         }
