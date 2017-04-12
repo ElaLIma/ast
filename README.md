@@ -1,6 +1,6 @@
 # AST
 #### Clases de APLICACIONS I SERVEIS TELEMÀTICS
 
-*Introducción 
-··1. CuaCircular 
+* Introducción 
+·· 1. CuaCircular 
 
