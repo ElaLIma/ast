@@ -1,7 +1,9 @@
-# AST
-#### Clases de APLICACIONS I SERVEIS TELEMÀTICS
+# Clases de APLICACIONS I SERVEIS TELEMÀTICS (AST)
 
-#### 
+### Teoría
+
+
+### Laboratorio 
 <ul>
 <li>Introducción</li>
 <ol type="1">
