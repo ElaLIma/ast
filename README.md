@@ -1,2 +1,2 @@
-# ast
-Clases de AST
+# AST
+Clases de APLICACIONS I SERVEIS TELEMÀTICS
