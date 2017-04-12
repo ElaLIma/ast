@@ -1,15 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Interface que emula el nivel de red del protocolo TCP/IP
+ * 
+ * @author Alex Llobet
+ * @author Andony Ramón Elá Lima
+ * 
  */
 package ast.practica1;
 import ast.protocols.tcp.TCPSegment;
 
-/**
- *
- * @author alex.llobet
- */
+
 public interface Channel {
 
     public void send(TCPSegment seg);
