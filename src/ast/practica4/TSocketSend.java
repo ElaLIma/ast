@@ -1,26 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ast.practica3;
+package ast.practica4;
 
 import ast.protocols.tcp.TCPSegment;
 
 /**
- *
- * @author alex.llobet
+ * @author AST's teachers
  */
-public class TSocketSender extends TSocketBase {
+public class TSocketSend extends TSocketBase {
 
-    protected int sndMMS;
+  protected int sndMSS;       // Send maximum segment size
 
-    public TSocketSender(Channel ch) {
-        super(ch);
-        sndMMS = ch.getMMS();
-    }
+  /**
+   * Create an endpoint bound to the local IP address and the given TCP port. The local IP address is determined by the
+   * networking system.
+   *
+   * @param ch
+   */
+  protected TSocketSend(ProtocolSend p, int localPort, int remotePort) {
+    super(p, localPort, remotePort);
+    sndMSS = p.channel.getMMS() - TCPSegment.HEADER_SIZE; // IP maximum message size - TCP header size
+  }
 
-    public void sendData(byte[] data, int offset, int length) {
+ public void sendData(byte[] data, int offset, int length) {
 
         /*if(length < sndMMS){
          sendSegment(this.segmentize(data, offset, length));
@@ -30,8 +30,8 @@ public class TSocketSender extends TSocketBase {
         while (quedenPerEnviar > 0) {
             int bytesAPosarAlSegment;
             bytesAPosarAlSegment = length;
-            if (sndMMS < length){
-                bytesAPosarAlSegment = sndMMS;
+            if (sndMSS < length){
+                bytesAPosarAlSegment = sndMSS;
             }
             sendSegment(this.segmentize(data, offset, bytesAPosarAlSegment));
             quedenPerEnviar -= bytesAPosarAlSegment;
@@ -52,16 +52,7 @@ public class TSocketSender extends TSocketBase {
         return segment;
     }
 
-    protected void sendSegment(TCPSegment segment) {
-        channel.send(segment);
-
-    }
-
-    public void close() {
-        TCPSegment s = new TCPSegment();
-        s.setFin(true);
-        this.sendSegment(s);
-
-    }
-
+  protected void sendSegment(TCPSegment segment) {
+    proto.channel.send(segment);
+  }
 }

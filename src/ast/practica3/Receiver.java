@@ -1,66 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ast.practica3;
 
-import ast.practica2.*;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import ast.logging.Log;
+import ast.logging.LogFactory;
 
-/**
- *
- * @author alex
- */
-public class Receiver implements Runnable {
+class Receiver implements Runnable {
+    public static Log log = LogFactory.getLog(Receiver.class);
 
-    private final TSocketReceiver tsr;
-    private final int N = 10;
-    private FileOutputStream fr;
-    private Mutex m;
+    protected TSocketRecv input;
+    protected int recvBuf, recvInterval;
 
-    public Receiver(Channel ch) {
-        tsr = new TSocketReceiver(ch);
-        this.m = new Mutex();
-        try {
-            fr = new FileOutputStream("poemaRebut.txt");
-        } catch (FileNotFoundException ex) {
-        }
+    public Receiver(Channel c, int recvBuf, int recvInterval) {
+        this.input = new TSocketRecv(c);
+        this.recvBuf = recvBuf;
+        this.recvInterval = recvInterval;
     }
 
-    //Rep un segment i guarda els bytes rebuts al fitxer
-    //retorna el número de bytes rebuts
-    //-1 si no ha rebut cap byte (final)
-    public int receive() throws IOException {
-        byte[] data = new byte[this.N];
-        int informacioProcessada; //nombre bytes llegits
-        informacioProcessada = this.tsr.receiveData(data, 0, this.N);
-        this.fr.write(data, 0, informacioProcessada);
-        return informacioProcessada;
+    public Receiver(Channel c) {
+        this(c, 25, 10);
     }
-
-    //Tanca l’stream al fitxer i la connexió
-    public void close() throws IOException {
-        this.tsr.close();
-        this.fr.close();
-
-    }
-//ElReceiver llegeix del Channel fins EOF i escriu per pantalla
 
     @Override
     public void run() {
-        int infoProcessada = 0;
         try {
-            do {
-                infoProcessada = this.receive();
-            } while (infoProcessada > 0);
-            this.close();
-        } catch (IOException ex) {
-            ex.getMessage();
+            byte n = 0;
+            byte[] buf = new byte[recvBuf];
+            while (true) {
+                int r = input.receiveData(buf, 0, buf.length);
+                // check received data stamps
+                for (int j = 0; j < r; j++) {
+                    if (buf[j] != n) {
+                            
+                        throw new Exception("ReceiverTask: Received data is corrupted "+n);
+                    }
+              //      System.out.println("Inf. recibida: "+buf[j]+"\n");
+                    n = (byte) (n + 1);
+                }
+                log.info("Receiver: received %d bytes", r);
+               Thread.sleep(recvInterval);
+            }
+        } catch (Exception e) {
+            log.error("Excepcio a Receiver: %s", e);
+            e.printStackTrace(System.err);
         }
-
     }
-
 }

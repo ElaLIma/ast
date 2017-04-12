@@ -5,22 +5,16 @@
  */
 package ast.practica3;
 
-import ast.practica2.*;
-import java.io.IOException;
-
 /**
  *
  * @author alex
  */
-public class Aplicacio {
 
-    public static void main(String[] args) throws IOException {
-        Channel ch = new BusyWaitChannel(2);
-        Sender s = new Sender(ch);
-        Thread sThread = new Thread(s);
-        Receiver r = new Receiver(ch);
-        Thread rThread = new Thread(r);
-        sThread.start();
-        rThread.start();
+
+public class Aplicacio {
+    public static void main(String[] args){
+            Channel c = new MonitorChannel(0.1,2);
+            new Thread(new Sender(c)).start();
+            new Thread(new Receiver(c)).start();
     }
 }

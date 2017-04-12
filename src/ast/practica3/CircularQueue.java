@@ -5,7 +5,6 @@
  */
 package ast.practica3;
 
-import ast.practica2.*;
 import ast.util.Queue;
 import java.util.Iterator;
 

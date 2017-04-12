@@ -1,32 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ast.practica3;
 
+package ast.practica4;
+
+
+
+import ast.practica3.CircularQueue;
 import ast.protocols.tcp.TCPSegment;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+/**
+ * Socket for receiving endpoint.
+ *
+ * @author upcnet
+ */
 public class TSocketRecv extends TSocketBase {
 
-    protected Thread thread;
     protected CircularQueue<TCPSegment> rcvQueue;
+    protected int rcvSegUnc;
     protected int rcvSegConsumedBytes;
-    // invariant: rcvQueue.empty() || rcvQueue.peekFirst().getDataLength() > rcvSegConsumedBytes
-
-    public TSocketRecv(Channel ch) {
-        super(ch);
-        rcvQueue = new CircularQueue<TCPSegment>(20);
-        rcvSegConsumedBytes = 0;
-        thread = new Thread(new ReceiverTask());
-        thread.start();
-    }
 
     /**
-     * Places received data in buf Veure descripció detallada en Exercici 3!!
+     * Create an endpoint bound to the local IP address and the given TCP port.
+     * The local IP address is determined by the networking system.
+     * @param ch
      */
+    protected TSocketRecv(ProtocolRecv p, int localPort, int remotePort) {
+        super(p, localPort, remotePort);
+        rcvQueue = new CircularQueue<TCPSegment>(20);
+        rcvSegUnc = 0;
+        rcvSegConsumedBytes = 0;
+    }
+
     public int receiveData(byte[] buf, int offset, int length) throws InterruptedException {
         lk.lock();
         int consumedData = 0;
@@ -91,23 +93,8 @@ public class TSocketRecv extends TSocketBase {
             lk.unlock();
         }
     }
-
-    public void close() {
-        System.out.println("Fi de transmissió");
-    }
-
-    class ReceiverTask implements Runnable {
-
-        @Override
-        public void run() {
-            while (true) {
-                TCPSegment rseg = channel.receive();
-                try {
-                    processReceivedSegment(rseg);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(TSocketRecv.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
 }
+
+
+
+

@@ -1,41 +1,39 @@
-package ast.practica3;
 
-import ast.logging.Log;
+package ast.practica4;
+
 import ast.logging.LogFactory;
+import ast.logging.Log;
 
 
-
-class Sender implements Runnable {
+public class Sender implements Runnable {
     public static Log log = LogFactory.getLog(Sender.class);
 
-    protected TSocketSender output;
+    protected TSocketSend output;
     protected int sendNum, sendSize, sendInterval;
 
-
-    public Sender(Channel c, int sendNum, int sendSize, int sendInterval) {
-        this.output = new TSocketSender(c);
+    
+    public Sender(TSocketSend pcb, int sendNum, int sendSize, int sendInterval) {
+        this.output = pcb;
         this.sendNum = sendNum;
         this.sendSize = sendSize;
         this.sendInterval = sendInterval;
     }
-
-    public Sender(Channel c) {
-        this(c, 20, 50, 100);
+    
+    public Sender(TSocketSend pcb) {
+        this(pcb, 20, 500, 100);
     }
-
+    
     public void run() {
         try {
             byte n = 0;
             byte[] buf = new byte[sendSize];
             for (int i = 0; i < sendNum; i++) {
-                Thread.sleep(sendInterval*10);
+                Thread.sleep(sendInterval);
                 // stamp data to send
                 for (int j = 0; j < sendSize; j++) {
                     buf[j] = n;
                     n = (byte) (n + 1);
-                   // System.out.println("Transmitiendo paquete: "+buf[j]+"\n");
                 }
-             //   System.out.println("eNVÍO DE PAQUETE. lONGITUD:"+buf.length+"\n");
                 output.sendData(buf, 0, buf.length);
             }
             log.info("Sender: transmission finished");
@@ -46,3 +44,5 @@ class Sender implements Runnable {
     }
 
 }
+
+

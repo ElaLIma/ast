@@ -5,9 +5,7 @@
  */
 package ast.practica3;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.*;
 import ast.protocols.tcp.TCPSegment;
 import java.util.Random;
 import java.util.logging.Level;
@@ -19,8 +17,8 @@ public class MonitorChannel implements Channel {
     protected Lock lk;
     protected Condition enviar, rebre;
     private static CircularQueue cua;
-    private double lossRatio;
-    private Random numeroAleatorio;
+    private double lossRatio, nombreAleatori;
+    private Random generadorAleatorio;
 
     public MonitorChannel(int length) {
         this.lk = new ReentrantLock();
@@ -35,6 +33,7 @@ public class MonitorChannel implements Channel {
         this.enviar = lk.newCondition();
         this.rebre = lk.newCondition();
         this.cua = new CircularQueue(length);
+        this.generadorAleatorio = new Random(System.currentTimeMillis());
         
 
     }
@@ -51,12 +50,12 @@ public class MonitorChannel implements Channel {
                 Logger.getLogger(MonitorChannel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        this.numeroAleatorio = new Random(System.currentTimeMillis());
-        if (this.numeroAleatorio.nextFloat() > this.lossRatio) {
+        this.nombreAleatori = generadorAleatorio.nextDouble();
+        //System.out.println("El lossratio es de: "+this.lossRatio+" i el nombre: "+this.nombreAleatori);
+        if (this.nombreAleatori > this.lossRatio) {
             cua.put(seg);
         }
         rebre.signal();
-
         lk.unlock();
     }
 

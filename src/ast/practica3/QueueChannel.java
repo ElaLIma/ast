@@ -5,8 +5,6 @@
  */
 package ast.practica3;
 
-import ast.practica2.*;
-import ast.practica1.*;
 import ast.protocols.tcp.TCPSegment;
 
 /**
