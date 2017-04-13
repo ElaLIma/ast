@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ast.practica1;
 
 import java.io.FileInputStream;
@@ -10,8 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- *
- * @author alex
+ * 
+ * Implementación del nivel de aplicación
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public class Sender {
 
@@ -21,7 +20,10 @@ public class Sender {
     private int offset;
     
 
-    //el fitxer poema.txt ha d’estar en la carpeta del projecte.
+    /**
+     * Constructor de la clase 
+     * @param ch Canal de envío
+     */
     public Sender(Channel ch) {
         tss = new TSocketSender(ch);
         this.offset = 0;
@@ -34,9 +36,12 @@ public class Sender {
     }
 
     
-    //llegeix N bytes del fitxer i els envia.
-    //Retorna el número real de bytes enviats
-    //-1 en cas de final de fitxer
+    /**
+     * Lee N bytes del fichero y los envia. Retorna el número real de bytes
+     * enviados. -1 en caso de final de fichero
+     * 
+     * @return Número de bytes leídos, -1 en casode final del fichero.
+     */
     public int enviar() {
     int c, datosLeidos=0,i = 0,posicion = 0;
         byte[] data = new byte[this.N]; //Creamos un array de bytes que llenaremos
@@ -67,12 +72,13 @@ public class Sender {
         return datosLeidos; //no hemos devuelto -1, ni hemos encontrado final de fichero, enotnces hemos leido N bytes
     }
     
-    //Tanca l’stream al fitxer i la connexió
+    /**
+     * Cierra los streams del fichero y la conexión.
+     * @throws IOException 
+     */
     public void close() throws IOException {
         this.fr.close();
         this.tss.close();
-
-
     }
     
  }

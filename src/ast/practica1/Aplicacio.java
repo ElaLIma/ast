@@ -1,17 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Práctica 1: CircularQueue
+ * 
+ * Clase Aplicacio que contiene la función main() en la que se envía y se recibe
+ * recibe de forma secuencial, el fichero poema.txt
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 package ast.practica1;
-
 import java.io.IOException;
 
-/**
- *
- * @author alex
- */
+
 public class Aplicacio {
+    
+    /**
+     * Se envían bytes mientras el buffer contega.
+     * @param args
+     * @throws IOException 
+     */
 
     public static void main(String[] args) throws IOException {
         Channel ch = new QueueChannel(2);

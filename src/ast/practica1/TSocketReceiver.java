@@ -1,24 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package ast.practica1;
 
+package ast.practica1;
 import ast.protocols.tcp.TCPSegment;
 
 /**
- *
- * @author alex.llobet
+ * 
+ * Implementa el nivel de transporte.
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public class TSocketReceiver {
 
     private final Channel ch;
     private byte[] data;
 
+    /**
+     * Constructor de la clase
+     * @param ch Canal de envío
+     */
     public TSocketReceiver(Channel ch) {
         this.ch = ch;
     }
+    
+    /**
+     * Obtiene un TCPSegment y toma sus datos para rellenar el buffer del receptor.
+     * 
+     * @param data Buffer del receptor, en el que se volcarán los datos recibidos.
+     * @param offset Posición del buffer desde donde se comenzará a volcar los datos recibidos.
+     * @param length Longitud de los datos a recibir. 
+     * @return Número real de bytes recibidos, no siempre coincide con length.
+     */
 
     public int receiveData(byte[] data, int offset, int length) {
         TCPSegment segment = this.ch.receive();  //Se recibe un segmento
@@ -43,11 +54,20 @@ public class TSocketReceiver {
         }
 
     }
+    
+    /**
+     * Cierra la transmisión de datos.
+     */
 
     public void close() {
         TCPSegment s = new TCPSegment();
         ch.send(s);
     }
+    
+    /**
+     * Retorna el buffer del receptor
+     * @return Buffer del receptor
+     */
 
     public byte[] getData() {
         return this.data;

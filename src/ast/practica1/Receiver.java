@@ -10,8 +10,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *
- * @author alex
+ * 
+ * Implementación del nivel de aplicación
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public class Receiver {
 
@@ -27,10 +30,13 @@ public class Receiver {
             ex.printStackTrace();
         }
     }
+    /**
+     * Recibe un segmento y guarda los bytes recibidos en un fichero.  
+     * 
+     * @return Número de bytes recibidos, -1 si no recibe nada.
+     * @throws IOException 
+     */
 
-    //Rep un segment i guarda els bytes rebuts al fitxer
-    //retorna el número de bytes rebuts
-    //-1 si no ha rebut cap byte (final)
     public int receive() throws IOException {
         byte[] data = new byte[this.N];
         int informacioProcessada;
@@ -47,7 +53,10 @@ public class Receiver {
         return informacioProcessada;
     }
 
-    //Tanca l’stream al fitxer i la connexió
+    /**
+     * Cierra los streams del fichero y la conexión.
+     * @throws IOException 
+     */
     public void close() throws IOException {
         this.fr.close();
         this.tsr.close();
