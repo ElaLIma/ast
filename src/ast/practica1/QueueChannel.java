@@ -15,7 +15,7 @@ import ast.protocols.tcp.TCPSegment;
 public class QueueChannel implements Channel {
 
     private int tamanyCua;
-    private CircularQueue cua;//= new CircularQueue(tamanyCua);
+    private CircularQueue cua;
 
     
     /**
@@ -48,7 +48,4 @@ public class QueueChannel implements Channel {
         return (TCPSegment) this.cua.get();
     }
 
-    /* public void setCua(int tamanyCua){
-        this.tamanyCua = tamanyCua;
-    }*/
 }

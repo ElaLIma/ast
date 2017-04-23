@@ -1,19 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ast.practica2;
+
 import ast.practica1.*;
 import ast.protocols.tcp.TCPSegment;
 
 /**
+ * Implementación del nivel físico
  *
- * @author alex.llobet
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public interface Channel {
+    
+    /**
+     * Método para enviar paquetes
+     * @param seg Segmento a enviar
+     */
 
     public void send(TCPSegment seg);
 
+    /**
+     * Método para recibir paquetes
+     * @return 
+     */
     public TCPSegment receive();
 }

@@ -1,26 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ast.practica2;
 
 import ast.practica1.*;
 import ast.protocols.tcp.TCPSegment;
 
 /**
+ * Clase que implementa el extremo receptor del socket
  *
- * @author alex.llobet
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public class TSocketReceiver {
 
     private final Channel ch;
     private byte[] data;
 
+    /**
+     * Constructor de la clase,recibe el canal
+     *
+     * @param ch Canal de comunicación
+     */
     public TSocketReceiver(Channel ch) {
         this.ch = ch;
     }
 
+    /**
+     * Método que implementa la recepción de paquetes
+     * 
+     * @param data Array en el que se introducirán los datos recibidos
+     * @param offset Posicion desde la que se introducirán los datos en el array de datos
+     * @param length Tamaño de datos a recibir
+     * @return Número de datos reales recibidos, información útil.
+     */
     public int receiveData(byte[] data, int offset, int length) {
         TCPSegment segment = this.ch.receive();  //Se recibe un segmento
         if (segment.isFin()) {
@@ -46,6 +57,10 @@ public class TSocketReceiver {
         }
 
     }
+    
+    /**
+     * Método que cierra la conexión
+     */
 
     public void close() {
         System.out.println("Fi de transmissió");

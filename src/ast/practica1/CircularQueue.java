@@ -1,17 +1,17 @@
+package ast.practica1;
+
+import ast.util.Queue;
+import java.util.Iterator;
+
 /**
- * Clase CircularQueue que implementa una cola circular mediante una lista enlazada,
- * con la inteface Queue.
+ * Clase CircularQueue que implementa una cola circular mediante una lista
+ * enlazada, con la inteface Queue.
  *
  * @author Andony Ramón Elá Lima
  * @author Alex Llobet
  *
  * @see Queue
  */
-package ast.practica1;
-
-import ast.util.Queue;
-import java.util.Iterator;
-
 public class CircularQueue<E> implements Queue<E> {
 
     private final E[] cua;
@@ -21,7 +21,9 @@ public class CircularQueue<E> implements Queue<E> {
     private int fi;
 
     /**
-     * Constructor de la clase
+     * Constructor de la clase que recibe el tamaño de la cola
+     *
+     * @param N Tamaño de la cola
      */
     public CircularQueue(int N) {
         this.N = N;
@@ -47,15 +49,14 @@ public class CircularQueue<E> implements Queue<E> {
     public int size() {
         return this.nombreElements;
     }
-    
+
     /**
      * Consulta si en la cola hay n o más espacios disponibles.
-     * 
+     *
      * @param n Número de espacios a consultar.
-     * @return  {@code true} si el número de espacios libres es mayor o igual que n.
-     * @throws IllegalArgumentException 
+     * @return {@code true} si el número de espacios libres es mayor o igual que n.
+     * @throws IllegalArgumentException
      */
-
     @Override
     public boolean hasFree(int n) throws IllegalArgumentException {
         if (n <= 0) {
@@ -64,32 +65,32 @@ public class CircularQueue<E> implements Queue<E> {
             return N - size() >= n || n == 0;
         }
     }
-    
+
     /**
      * Consulta si la cola está vacía.
-     * @return  {@code true} si la cola está vacía.
+     *
+     * @return {@code true} si la cola está vacía.
      */
-
     @Override
     public boolean empty() {
         return nombreElements == 0;
     }
-    
+
     /**
      * Consulta si la cola está completa, esdecir, no tiene espacios vacíos.
+     *
      * @return {@code true} si la cola ya no tiene espacios vacíos.
      */
-
     @Override
     public boolean full() {
         return nombreElements == N;
     }
-    
+
     /**
      * Selecciona y devuelve el primer elemento de la cola, sin borrarlo.
+     *
      * @return El primer elemento de la cola.
      */
-
     @Override
     public E peekFirst() {
         if (cua[inici] != null) {
@@ -98,12 +99,12 @@ public class CircularQueue<E> implements Queue<E> {
             return null;
         }
     }
-    
+
     /**
      * Selecciona y devuelve el último elemento de la cola, sin borrarlo.
+     *
      * @return El último elemento de la cola.
      */
-
     @Override
     public E peekLast() {
         int finalito = (inici + nombreElements - 1) % N;
@@ -113,13 +114,13 @@ public class CircularQueue<E> implements Queue<E> {
             return null;
         }
     }
-    
+
     /**
      * Selecciona y devuelve el primer elemento de la cola, y despúes lo borra.
+     *
      * @return El primer elemento de la cola.
      * @throws IllegalStateException
      */
-
     @Override
     public E get() throws IllegalStateException {
         if (empty()) {
@@ -132,14 +133,14 @@ public class CircularQueue<E> implements Queue<E> {
             return objecte; //pot contenir nullPointer
         }
     }
-    
-    /**
-     * Inserta el elemento pasado en la última posición de la cola. Si la cola está
-     * vacía, lanza una exception.
-     * @param e Elemento a insertar en la cola.
-     * @throws IllegalStateException 
-     */
 
+    /**
+     * Inserta el elemento pasado en la última posición de la cola. Si la cola
+     * está vacía, lanza una exception.
+     *
+     * @param e Elemento a insertar en la cola.
+     * @throws IllegalStateException
+     */
     @Override
     public void put(E e) throws IllegalStateException {
         if (full()) {

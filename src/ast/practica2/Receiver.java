@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ast.practica2;
 
 import java.io.FileNotFoundException;
@@ -10,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * Clase que implementa el receptor
  *
- * @author alex
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
  */
 public class Receiver implements Runnable {
 
@@ -20,6 +17,11 @@ public class Receiver implements Runnable {
     private FileOutputStream fr;
     private Mutex m;
 
+    /**
+     * Constructor de la clase que recibe un canal por donde enviar los paquetes
+     *
+     * @param ch Canal por donde enviar los paquetes
+     */
     public Receiver(Channel ch) {
         tsr = new TSocketReceiver(ch);
         this.m = new Mutex();
@@ -32,6 +34,12 @@ public class Receiver implements Runnable {
     //Rep un segment i guarda els bytes rebuts al fitxer
     //retorna el número de bytes rebuts
     //-1 si no ha rebut cap byte (final)
+    /**
+     * Método que recibe los paquetes enviados
+     *
+     * @return El número real bytes recibidos, información útil
+     * @throws IOException
+     */
     public int receive() throws IOException {
         byte[] data = new byte[this.N];
         int informacioProcessada; //nombre bytes llegits
@@ -41,12 +49,17 @@ public class Receiver implements Runnable {
     }
 
     //Tanca l’stream al fitxer i la connexió
+    /**
+     * Cierra el stream que lee el fichero y la conexión
+     *
+     * @throws IOException
+     */
     public void close() throws IOException {
         this.tsr.close();
         this.fr.close();
 
     }
-//ElReceiver llegeix del Channel fins EOF i escriu per pantalla
+    //ElReceiver llegeix del Channel fins EOF i escriu per pantalla
 
     @Override
     public void run() {

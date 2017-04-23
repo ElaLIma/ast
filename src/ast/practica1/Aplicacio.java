@@ -2,7 +2,7 @@
  * Práctica 1: CircularQueue
  * 
  * Clase Aplicacio que contiene la función main() en la que se envía y se recibe
- * recibe de forma secuencial, el fichero poema.txt
+ * de forma secuencial, el fichero poema.txt
  * 
  * @author Andony Ramón Elá Lima
  * @author Alex Llobet
