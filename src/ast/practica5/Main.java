@@ -1,8 +1,19 @@
-
+/**
+ * Práctica 5: Control de flujo (Stop & wait)
+ *
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
+ */
 package ast.practica5;
 import ast.util.FDuplexChannel;
 // define imports
-
+/**
+ * 
+ * Crea un canal FullDuplex entre dos equipos
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
+ */
 public class Main {
 
     public static void main(String[] args){

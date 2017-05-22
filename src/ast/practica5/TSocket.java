@@ -1,3 +1,11 @@
+/**
+ * Práctica 5: Control de flujo (Stop & wait)
+ * 
+ * 
+ * 
+ * @author Andony Ramón Elá Lima
+ * @author Alex Llobet
+ */
 package ast.practica5;
 
 import ast.logging.Log;
