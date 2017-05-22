@@ -5,6 +5,7 @@ package ast.practica4;
 
 import ast.practica3.CircularQueue;
 import ast.protocols.tcp.TCPSegment;
+import java.util.Arrays;
 
 /**
  * Socket for receiving endpoint.
@@ -42,28 +43,35 @@ public class TSocketRecv extends TSocketBase {
             while (consumedData < length && !rcvQueue.empty()) {
                 // fill buf with bytes from segments in rcvQueue
                 // Hint: use consumeSegment!
+                System.out.println("Tamaño buffer: "+buf.length +" offset: "+offset);
                 consumedData += this.consumeSegment(buf, offset, length - consumedData);
                 offset += consumedData;
+                
 
             }
-            return consumedData;
             
+             return consumedData;
 
         } finally {
             lk.unlock();
         }
+       
     }
 
     protected int consumeSegment(byte[] buf, int offset, int length) {
         TCPSegment seg = rcvQueue.peekFirst();
+        System.err.println("Tamany dades: "+seg.getDataLength());
+        System.out.println(" dades: "+Arrays.toString(seg.getData()));
+        
         // get data from seg and copy to receiveData's buffer
-        int n = seg.getDataLength() - rcvSegConsumedBytes;
+        int n = seg.getData().length - rcvSegConsumedBytes;
+        System.out.println("DFJKLASHJASHLDJHSKLA"+seg.getData().length);
         if (n > length) {
             // receiveData's buffer is small. Consume a fragment of the received segment
             n = length;
         }
         // n == min(length, seg.getDataLength() - rcvSegConsumedBytes)
-        System.arraycopy(seg.getData(), seg.getDataOffset()+rcvSegConsumedBytes, buf, offset, n);
+        System.arraycopy(seg.getData(), seg.getData().length+rcvSegConsumedBytes, buf, offset, n);
         rcvSegConsumedBytes += n;
         if (rcvSegConsumedBytes == seg.getDataLength()) {
             // seg is totally consumed. Remove from rcvQueue
@@ -84,6 +92,7 @@ public class TSocketRecv extends TSocketBase {
     protected void processReceivedSegment(TCPSegment rseg) throws InterruptedException {
         lk.lock();
         try {
+                    
             if (!rcvQueue.full()) {
                 rcvQueue.put(rseg);
                 this.appCV.signal();

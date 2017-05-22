@@ -26,29 +26,32 @@ public class TSocketSender extends TSocketBase {
          sendSegment(this.segmentize(data, offset, length));
          }*/
         int quedenPerEnviar = length;
-        
+
         while (quedenPerEnviar > 0) {
             int bytesAPosarAlSegment;
             bytesAPosarAlSegment = length;
-            if (sndMMS < length){
+            if (sndMMS < length) {
                 bytesAPosarAlSegment = sndMMS;
             }
             sendSegment(this.segmentize(data, offset, bytesAPosarAlSegment));
             quedenPerEnviar -= bytesAPosarAlSegment;
+            offset += bytesAPosarAlSegment;
         }
-
 
     }
 
     public TCPSegment segmentize(byte[] data, int offset, int length) {
-        byte[] buf = data;
+        byte[] buf = new byte[length];
+        for (int k = offset; k < length; k++) {
+            buf[k - offset] = data[k];
+        }
         TCPSegment segment = new TCPSegment();
         segment.setData(buf, offset, length);
         //Miramos qué hay dentro del segmento:
       /*  System.out.println("Informacion dentro segmento: \n");
-        for(int g=0; g<buf.length;g++)
-            System.out.println(segment.getData() +"\n");*/
-        
+         for(int g=0; g<buf.length;g++)
+         System.out.println(segment.getData() +"\n");*/
+
         return segment;
     }
 

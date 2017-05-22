@@ -1,7 +1,7 @@
 /*
  * CopyBytes class for illustrate how ByteStream works
  */
-package teoria;
+package ast.teoria;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

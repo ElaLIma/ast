@@ -13,7 +13,7 @@ package ast.practica3;
 
 public class Aplicacio {
     public static void main(String[] args){
-            Channel c = new MonitorChannel(0.1,2);
+            Channel c = new MonitorChannel(2000);
             new Thread(new Sender(c)).start();
             new Thread(new Receiver(c)).start();
     }

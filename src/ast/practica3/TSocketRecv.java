@@ -18,7 +18,7 @@ public class TSocketRecv extends TSocketBase {
 
     public TSocketRecv(Channel ch) {
         super(ch);
-        rcvQueue = new CircularQueue<TCPSegment>(20);
+        rcvQueue = new CircularQueue<TCPSegment>(2000);
         rcvSegConsumedBytes = 0;
         thread = new Thread(new ReceiverTask());
         thread.start();
@@ -32,6 +32,7 @@ public class TSocketRecv extends TSocketBase {
         int consumedData = 0;
 
         try {
+            System.out.println("Hilo : " + this);
 
             // wait until receive queue is not empty
             while (rcvQueue.empty()) {
@@ -41,11 +42,11 @@ public class TSocketRecv extends TSocketBase {
                 // fill buf with bytes from segments in rcvQueue
                 // Hint: use consumeSegment!
                 consumedData += this.consumeSegment(buf, offset, length - consumedData);
+                System.err.println("[receiveData()]Cantidad de datos consumidos : " + consumedData);
                 offset += consumedData;
 
             }
             return consumedData;
-            
 
         } finally {
             lk.unlock();
@@ -54,23 +55,36 @@ public class TSocketRecv extends TSocketBase {
 
     protected int consumeSegment(byte[] buf, int offset, int length) {
         TCPSegment seg = rcvQueue.peekFirst();
+
         // get data from seg and copy to receiveData's buffer
         int n = seg.getDataLength() - rcvSegConsumedBytes;
         if (n > length) {
             // receiveData's buffer is small. Consume a fragment of the received segment
             n = length;
         }
-        // n == min(length, seg.getDataLength() - rcvSegConsumedBytes)
-        System.arraycopy(seg.getData(), seg.getDataOffset()+rcvSegConsumedBytes, buf, offset, n);
+        System.out.println("---------------------------");
+        System.out.println("Cantidad de datos a copiar : " + n);
+        System.out.println("Offset del buffer de copia : " + offset);
+        System.out.println("Tamaño del buffer de copia : " + buf.length);
+        System.out.println("Tamaño del segmento a copiar : " + seg.getDataLength());
+        int suma = seg.getDataOffset() + rcvSegConsumedBytes;
+        System.out.println("Offset desde donde copiar : " + suma);
+        System.out.println("Offset deL segmento recibido : " + seg.getDataOffset());
+        System.out.println("Offset desde donde copiar : " + rcvSegConsumedBytes);
+        
+        System.arraycopy(seg.getData(), rcvSegConsumedBytes, buf, offset, n);
+        
         rcvSegConsumedBytes += n;
+        
+        System.err.println("[consumeSegment] : " + rcvSegConsumedBytes);
+
         if (rcvSegConsumedBytes == seg.getDataLength()) {
+            System.out.println("entro en if");
             // seg is totally consumed. Remove from rcvQueue
             rcvQueue.get();
             rcvSegConsumedBytes = 0;
         }
-       /* System.out.println("Segmento consumido: ");
-        for(int k=0; k<n ;k++)
-            System.out.println(buf[k]+" ");*/
+
         return n;
     }
 

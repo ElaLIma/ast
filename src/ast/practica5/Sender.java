@@ -1,42 +1,42 @@
-package ast.practica3;
 
-import ast.logging.Log;
+package ast.practica5;
+
 import ast.logging.LogFactory;
+import ast.logging.Log;
+import java.util.Arrays;
 
 
-
-class Sender implements Runnable {
+public class Sender implements Runnable {
     public static Log log = LogFactory.getLog(Sender.class);
 
-    protected TSocketSender output;
+    protected TSocket output;
     protected int sendNum, sendSize, sendInterval;
 
-
-    public Sender(Channel c, int sendNum, int sendSize, int sendInterval) {
-        this.output = new TSocketSender(c);
+    
+    public Sender(TSocket pcb, int sendNum, int sendSize, int sendInterval) {
+        this.output = pcb;
         this.sendNum = sendNum;
         this.sendSize = sendSize;
         this.sendInterval = sendInterval;
     }
-
-    public Sender(Channel c) {
-        this(c, 4, 10, 100);
+    
+    public Sender(TSocket pcb) {
+        this(pcb, 20, 500, 10);
     }
-
+    
     public void run() {
         try {
             byte n = 0;
             byte[] buf = new byte[sendSize];
             for (int i = 0; i < sendNum; i++) {
-                Thread.sleep(sendInterval*10);
+                Thread.sleep(sendInterval);
                 // stamp data to send
                 for (int j = 0; j < sendSize; j++) {
                     buf[j] = n;
                     n = (byte) (n + 1);
-                   // System.out.println("Transmitiendo paquete: "+buf[j]+"\n");
                 }
-             //   System.out.println("eNVÍO DE PAQUETE. lONGITUD:"+buf.length+"\n");
                 output.sendData(buf, 0, buf.length);
+                System.out.println("Sender: Seha enviado un paquete con info: "+Arrays.toString(buf));
             }
             log.info("Sender: transmission finished");
         } catch (Exception e) {
@@ -46,3 +46,5 @@ class Sender implements Runnable {
     }
 
 }
+
+

@@ -13,8 +13,8 @@ public class CircularQueue<E> implements Queue<E> {
     private final E[] cua;
     private final int N;
     private volatile int nombreElements;
-    private volatile int inici;
-    private volatile int fi;
+    private  int inici;
+    private  int fi;
 
     public CircularQueue(int N) {
         this.N = N;

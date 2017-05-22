@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 
 public class MonitorChannel implements Channel {
 
-    public static final int MAX_MSG_SIZE = 1480; // Link MTU - IP header
+    //public static final int MAX_MSG_SIZE = 1480; // Link MTU - IP header
+    public static final int MAX_MSG_SIZE = 5; 
     protected Lock lk;
     protected Condition enviar, rebre;
     private static CircularQueue cua;
@@ -25,6 +26,7 @@ public class MonitorChannel implements Channel {
         this.enviar = lk.newCondition();
         this.rebre = lk.newCondition();
         this.cua = new CircularQueue(length);
+        this.generadorAleatorio = new Random();
     }
 
     public MonitorChannel(double lossRatio, int length) {
@@ -33,7 +35,7 @@ public class MonitorChannel implements Channel {
         this.enviar = lk.newCondition();
         this.rebre = lk.newCondition();
         this.cua = new CircularQueue(length);
-        this.generadorAleatorio = new Random(System.currentTimeMillis());
+        this.generadorAleatorio = new Random();
         
 
     }
@@ -51,7 +53,7 @@ public class MonitorChannel implements Channel {
             }
         }
         this.nombreAleatori = generadorAleatorio.nextDouble();
-        //System.out.println("El lossratio es de: "+this.lossRatio+" i el nombre: "+this.nombreAleatori);
+       // System.out.println("El lossratio es de: "+this.lossRatio+" i el nombre: "+this.nombreAleatori);
         if (this.nombreAleatori > this.lossRatio) {
             cua.put(seg);
         }

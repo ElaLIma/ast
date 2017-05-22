@@ -16,7 +16,7 @@ class Receiver implements Runnable {
     }
 
     public Receiver(Channel c) {
-        this(c, 25, 10);
+        this(c, 10, 10);
     }
 
     @Override
